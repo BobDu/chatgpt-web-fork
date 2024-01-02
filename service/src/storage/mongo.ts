@@ -202,11 +202,14 @@ export async function deleteChat(roomId: number, uuid: number, inversion: boolea
   await chatCol.updateOne(query, update)
 }
 
-export async function createUser(email: string, password: string, roles?: UserRole[], remark?: string): Promise<UserInfo> {
+export async function createUser(email: string, password: string, roles?: UserRole[], status?: Status, remark?: string): Promise<UserInfo> {
   email = email.toLowerCase()
   const userInfo = new UserInfo(email, password)
   if (roles && roles.includes(UserRole.Admin))
     userInfo.status = Status.Normal
+  if (status !== null)
+    userInfo.status = status
+
   userInfo.roles = roles
   userInfo.remark = remark
   await userCol.insertOne(userInfo)

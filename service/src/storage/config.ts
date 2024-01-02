@@ -44,6 +44,7 @@ export async function getOriginConfig() {
       new SiteConfig(
         process.env.SITE_TITLE || 'ChatGpt Web',
         isNotEmptyString(process.env.AUTH_SECRET_KEY),
+        process.env.LOGIN_BY_SSO_PROXY === 'true',
         process.env.AUTH_SECRET_KEY,
         process.env.REGISTER_ENABLED === 'true',
         process.env.REGISTER_REVIEW === 'true',
@@ -58,6 +59,8 @@ export async function getOriginConfig() {
   else {
     if (config.siteConfig.loginEnabled === undefined)
       config.siteConfig.loginEnabled = isNotEmptyString(process.env.AUTH_SECRET_KEY)
+    if (config.siteConfig.loginBySsoProxy === undefined)
+      config.siteConfig.loginBySsoProxy = process.env.LOGIN_BY_SSO_PROXY === 'true'
     if (config.siteConfig.loginSalt === undefined)
       config.siteConfig.loginSalt = process.env.AUTH_SECRET_KEY
     if (config.apiDisableDebug === undefined)

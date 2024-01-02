@@ -174,6 +174,7 @@ export class SiteConfig {
   constructor(
     public siteTitle?: string,
     public loginEnabled?: boolean,
+    public loginBySsoProxy?: boolean,
     public loginSalt?: string,
     public registerEnabled?: boolean,
     public registerReview?: boolean,

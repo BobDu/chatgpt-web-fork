@@ -568,8 +568,9 @@ router.post('/config', rootAuth, async (req, res) => {
 router.post('/session', async (req, res) => {
   try {
     const config = await getCacheConfig()
-    const hasAuth = config.siteConfig.loginEnabled
-    const allowRegister = (await getCacheConfig()).siteConfig.registerEnabled
+    const hasAuth = config.siteConfig.loginEnabled || config.siteConfig.loginBySsoProxy
+    const loginBySsoProxy = config.siteConfig.loginBySsoProxy
+    const allowRegister = config.siteConfig.registerEnabled
     if (config.apiModel !== 'ChatGPTAPI' && config.apiModel !== 'ChatGPTUnofficialProxyAPI')
       config.apiModel = 'ChatGPTAPI'
     const userId = await getUserId(req)
@@ -636,6 +637,7 @@ router.post('/session', async (req, res) => {
       message: '',
       data: {
         auth: hasAuth,
+        loginBySsoProxy,
         allowRegister,
         model: config.apiModel,
         title: config.siteConfig.siteTitle,
@@ -800,7 +802,7 @@ router.post('/user-edit', rootAuth, async (req, res) => {
     }
     else {
       const newPassword = md5(password)
-      const user = await createUser(email, newPassword, roles, remark)
+      const user = await createUser(email, newPassword, roles, null, remark)
       await updateUserStatus(user._id.toString(), Status.Normal)
     }
     res.send({ status: 'Success', message: '更新成功 | Update successfully' })

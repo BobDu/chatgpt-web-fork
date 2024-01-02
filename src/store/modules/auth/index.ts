@@ -8,6 +8,7 @@ import { UserConfig } from '@/components/common/Setting/model'
 
 interface SessionResponse {
   auth: boolean
+  loginBySsoProxy: boolean
   model: 'ChatGPTAPI' | 'ChatGPTUnofficialProxyAPI'
   allowRegister: boolean
   title: string
